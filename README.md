@@ -1,17 +1,39 @@
+# Introduction
+An HTLC is a conditional transfer of value from "depositor" to "recipient" where two distinct conditions prevent immediate execution. 1) The hashlock requires presenting the proper "secret" to the blockchain prior to the 2) timelock expiration, else the value automatically returns to "depositor".
+
+This allows two parties to exchange assets on independent platforms trustlessly and securely and thus enables Atomic Cross-Chain Swaps (ACCS) among other useful functionalities.
+
 # hashed-timelock-contract-lc-ethereum
 This is to demostrate an atomic swap of two blockchain networks using HTLC. 
 Two participants: Peter and Han
 Two blockchain networks:  Learning Coin (LC) and Ethereum Ropsten Testnet (ETH)
 Transaction: Peter will send 1 LC to Han's LC wallet, in exchange, Han will send 2 ETH to Peter's ETH wallet. 
 
-[![NPM Package](https://img.shields.io/npm/v/ethereum-htlc.svg?style=flat-square)](https://www.npmjs.org/package/ethereum-htlc)
-[![Build Status](https://travis-ci.org/chatch/hashed-timelock-contract-ethereum.svg?branch=master)](https://travis-ci.org/chatch/hashed-timelock-contract-ethereum)
-
 [Hashed Timelock Contracts](https://en.bitcoin.it/wiki/Hashed_Timelock_Contracts) (HTLCs) for Ethereum:
 
-- [HashedTimelock.sol](contracts/HashedTimelock.sol) - HTLC for native ETH token
+- [HashedTimelock.sol](contracts/HashedTimelock.sol) - HTLC for native tokens exchange
 
 Use these contracts for creating HTLCs on the Ethereum side of a cross chain atomic swap (for example the [xcat](https://github.com/chatch/xcat) project).
+
+# Process flow
+## Creation Phase: 
+having agreed on the parameters, Peter and Han create the HTLCs.
+```
+  Peter creates an HTLC on LC network with the receiver as Han. 1 LC is locked into the LC's HTLC. He shares the smart contract ID and Hash(the hashlock).
+  Han waits for the HTLC to confirm on the LC blockchain and validates all parameters, including but not limited to, that she is the receiver, that the amount is appropriate, and the HTLC hash-lock matches the agreed upon Hash.
+  Han creates an HTLC on Ethereum with the receiver as Peter. 2 ETH are locked in the Ethereum HTLC.
+  Peter waits for the HTLC to confirm on the Ethereum blockchain and validates that he is the receiver and the HTLC hash-lock matches the agreed upon Hash.
+```
+
+## Redemption Phase: 
+with the HTLCs created on both blockchains, Peter and Han can now proceed to the settlement.
+```
+Peter redeems the ETH on Ethereum by redeeming the HTLC by submitting the Secret(pre-image) in a transaction. In doing so, he exposes the Secret(pre-Image).
+  Han waits for Peter to expose the Secret, and then Han redeems the HTLC on LC using the same Secret.
+```
+
+## Done: 
+the swap between Peter and Han is now complete.
 
 ## Run Tests
 * Install truffle
@@ -83,7 +105,7 @@ Compiling ./test/helper/EUToken.sol...
   39 passing (27s)
 ```
 
-## Protocol - Native ETH
+## Protocol - Native token exchange between Learning Coin (LC) and Ethereum (ETH)
 
 ### Main flow
 
