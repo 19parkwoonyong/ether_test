@@ -1,4 +1,8 @@
-# hashed-timelock-contract-ethereum
+# hashed-timelock-contract-lc-ethereum
+This is to demostrate an atomic swap of two blockchain networks using HTLC. 
+Two participants: Peter and Han
+Two blockchain networks:  Learning Coin (LC) and Ethereum Ropsten Testnet (ETH)
+Transaction: Peter will send 1 LC to Han's LC wallet, in exchange, Han will send 2 ETH to Peter's ETH wallet. 
 
 [![NPM Package](https://img.shields.io/npm/v/ethereum-htlc.svg?style=flat-square)](https://www.npmjs.org/package/ethereum-htlc)
 [![Build Status](https://travis-ci.org/chatch/hashed-timelock-contract-ethereum.svg?branch=master)](https://travis-ci.org/chatch/hashed-timelock-contract-ethereum)
@@ -6,8 +10,6 @@
 [Hashed Timelock Contracts](https://en.bitcoin.it/wiki/Hashed_Timelock_Contracts) (HTLCs) for Ethereum:
 
 - [HashedTimelock.sol](contracts/HashedTimelock.sol) - HTLC for native ETH token
-- [HashedTimelockERC20.sol](contracts/HashedTimelockERC20.sol) - HTLC for ERC20 tokens
-- [HashedTimelockERC721.sol](contracts/HashedTimelockERC721.sol) - HTLC for ERC721 tokens
 
 Use these contracts for creating HTLCs on the Ethereum side of a cross chain atomic swap (for example the [xcat](https://github.com/chatch/xcat) project).
 
@@ -85,21 +87,12 @@ Compiling ./test/helper/EUToken.sol...
 
 ### Main flow
 
-![](docs/sequence-diagram-htlc-eth-success.png?raw=true)
+![](docs/sequence-diagram-htlc-lc-eth-success.png?raw=true)
 
 ### Timelock expires
 
 ![](docs/sequence-diagram-htlc-eth-refund.png?raw=true)
 
-## Protocol - ERC20
-
-### Main flow
-
-![](docs/sequence-diagram-htlc-erc20-success.png?raw=true)
-
-### Timelock expires
-
-![](docs/sequence-diagram-htlc-erc20-refund.png?raw=true)
 
 ## Interface
 
@@ -110,19 +103,3 @@ Compiling ./test/helper/EUToken.sol...
 3.  `refund(contractId)` if withdraw was not called the contract creator can get a refund by calling this some time after the time lock has expired.
 
 See [test/htlc.js](test/htlc.js) for examples of interacting with the contract from javascript.
-
-### HashedTimelockERC20
-
-1.  `newContract(receiverAddress, hashlock, timelock, tokenContract, amount)` create new HTLC with given receiver, hashlock, expiry, ERC20 token contract address and amount of tokens
-2.  `withdraw(contractId, preimage)` claim funds revealing the preimage
-3.  `refund(contractId)` if withdraw was not called the contract creator can get a refund by calling this some time after the time lock has expired.
-
-See [test/htlcERC20.js](test/htlcERC20.js) for examples of interacting with the contract from javascript.
-
-### HashedTimelockERC721
-
-1.  `newContract(receiverAddress, hashlock, timelock, tokenContract, tokenId)` create new HTLC with given receiver, hashlock, expiry, ERC20 token contract address and the token to transfer
-2.  `withdraw(contractId, preimage)` claim funds revealing the preimage
-3.  `refund(contractId)` if withdraw was not called the contract creator can get a refund by calling this some time after the time lock has expired.
-
-
