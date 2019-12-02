@@ -18,6 +18,7 @@ Use these contracts for creating HTLCs on the Ethereum side of a cross chain ato
 # Process flow
 ## Creation Phase: 
 having agreed on the parameters, Peter and Han create the HTLCs.
+
 ```
   Peter creates an HTLC on LC network with the receiver as Han. 1 LC is locked into the LC's HTLC. He shares the smart contract ID and Hash(the hashlock).
   Han waits for the HTLC to confirm on the LC blockchain and validates all parameters, including but not limited to, that she is the receiver, that the amount is appropriate, and the HTLC hash-lock matches the agreed upon Hash.
@@ -27,8 +28,9 @@ having agreed on the parameters, Peter and Han create the HTLCs.
 
 ## Redemption Phase: 
 with the HTLCs created on both blockchains, Peter and Han can now proceed to the settlement.
+
 ```
-Peter redeems the ETH on Ethereum by redeeming the HTLC by submitting the Secret(pre-image) in a transaction. In doing so, he exposes the Secret(pre-Image).
+  Peter redeems the ETH on Ethereum by redeeming the HTLC by submitting the Secret(pre-image) in a transaction. In doing so, he exposes the Secret(pre-Image).
   Han waits for Peter to expose the Secret, and then Han redeems the HTLC on LC using the same Secret.
 ```
 
